@@ -1,0 +1,132 @@
+.disclaimer {
+  align-items: center;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  color: #9a3412;
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  padding: 10px 12px;
+}
+
+.hero-panel,
+.panel,
+.stat-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 14px 30px rgba(15, 23, 42, 0.06);
+}
+
+.stat-card {
+  border-top: 4px solid var(--accent);
+  padding: 16px;
+}
+
+.stat-card__head h3,
+.panel h3 {
+  margin: 0 0 4px;
+}
+
+.stat-card__head p {
+  color: #64748b;
+  margin: 0 0 12px;
+}
+
+.panel {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.number-ball-group {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.number-ball {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  font-weight: 800;
+  height: 30px;
+  justify-content: center;
+  width: 30px;
+}
+
+.number-ball--front { background: #fee2e2; color: #b91c1c; }
+.number-ball--back { background: #dbeafe; color: #1d4ed8; }
+.number-ball--muted { background: #e5e7eb; color: #475569; }
+
+.range-selector,
+.control-row,
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.range-selector button,
+.button-row button,
+.control-row button {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  color: #172033;
+  min-height: 38px;
+  padding: 0 12px;
+}
+
+.range-selector button.is-active,
+.button-row button:hover,
+.control-row button {
+  background: #111827;
+  border-color: #111827;
+  color: #fff;
+}
+
+.mini-grid,
+.two-column,
+.metric-strip {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mini-list,
+.pair-list {
+  background: #f8fafc;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.metric {
+  background: #f8fafc;
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+}
+
+.metric span,
+.card-note {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.metric strong {
+  font-size: 24px;
+}
+
+.ok-text { color: #047857; font-weight: 700; }
+.error-text { color: #b91c1c; font-weight: 700; }
+
+@media (max-width: 640px) {
+  .mini-grid,
+  .two-column,
+  .metric-strip { grid-template-columns: 1fr; }
+}

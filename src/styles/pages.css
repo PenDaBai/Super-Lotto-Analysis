@@ -1,0 +1,137 @@
+.hero-panel {
+  min-height: 260px;
+  padding: 38px;
+}
+
+.eyebrow {
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.hero-panel h1 {
+  font-size: 54px;
+  line-height: 1;
+  margin: 14px 0;
+}
+
+.hero-panel p,
+.quick-card span {
+  color: #64748b;
+}
+
+.hero-balls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.quick-grid,
+.analysis-grid,
+.query-grid,
+.manage-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.quick-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.analysis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.query-grid,
+.manage-grid { grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr); }
+
+.quick-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #172033;
+  display: grid;
+  gap: 8px;
+  min-height: 130px;
+  padding: 18px;
+  text-align: left;
+}
+
+.quick-card svg {
+  color: #2563eb;
+}
+
+.draw-list,
+.pick-list {
+  display: grid;
+  gap: 8px;
+  max-height: 620px;
+  overflow: auto;
+}
+
+.draw-list.compact {
+  max-height: 420px;
+}
+
+.draw-row,
+.pick-row {
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 60px 90px minmax(170px, 1fr) minmax(70px, auto);
+  min-height: 48px;
+  padding: 8px 10px;
+}
+
+.pick-row {
+  grid-template-columns: 90px minmax(170px, auto) minmax(70px, auto) 1fr;
+}
+
+.form-row,
+.weekday-row,
+.tail-list,
+.similar-list,
+.rank-table {
+  display: grid;
+  gap: 8px;
+}
+
+.rank-row {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr 0.8fr 0.8fr;
+}
+
+.rank-row--head {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.pair-list span,
+.weekday-row span,
+.tail-list span,
+.similar-list div {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.latest-inline {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+@media (max-width: 980px) {
+  .quick-grid,
+  .analysis-grid,
+  .query-grid,
+  .manage-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .hero-panel { padding: 22px; }
+  .hero-panel h1 { font-size: 40px; }
+  .draw-row,
+  .pick-row { grid-template-columns: 1fr; }
+}
