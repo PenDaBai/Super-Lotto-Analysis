@@ -4,7 +4,6 @@ import { CoOccurrenceCard } from "./cards/CoOccurrenceCard";
 import { FunStatsCard } from "./cards/FunStatsCard";
 import { HotColdCard } from "./cards/HotColdCard";
 import { OmissionCard } from "./cards/OmissionCard";
-import { SimilarityCard } from "./cards/SimilarityCard";
 import { StructureCard } from "./cards/StructureCard";
 import { TimeStatsCard } from "./cards/TimeStatsCard";
 
@@ -20,6 +19,5 @@ export const analysisCards: AnalysisCardDefinition[] = [
   { id: "structure", title: "结构分布", Component: StructureCard },
   { id: "co-occurrence", title: "组合共现", Component: CoOccurrenceCard },
   { id: "time", title: "时间维度", Component: TimeStatsCard },
-  { id: "similarity", title: "历史相似", Component: SimilarityCard },
   { id: "fun", title: "趣味玄学", Component: FunStatsCard }
 ];

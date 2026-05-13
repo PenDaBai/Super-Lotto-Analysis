@@ -17,6 +17,10 @@ const PRIZE_TABLE: Array<[number, number, string, string]> = [
   [0, 2, "九等奖", "后区 2 个"]
 ];
 
+export const PRIZE_LEVELS = ["一等奖", "二等奖", "三等奖", "四等奖", "五等奖", "六等奖", "七等奖", "八等奖", "九等奖"] as const;
+
+export type PrizeLevel = typeof PRIZE_LEVELS[number];
+
 export function evaluatePrize(
   selectedFront: number[],
   selectedBack: number[],

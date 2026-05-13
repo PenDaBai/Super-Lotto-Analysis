@@ -12,7 +12,9 @@ export function calcCoOccurrence(draws: DltDraw[]) {
 
   return {
     frontPairs: topPairs(frontPairs, 10),
-    backPairs: topPairs(backPairs, 8)
+    backPairs: topPairs(backPairs, 8),
+    frontMax: Math.max(...frontPairs.values()),
+    backMax: Math.max(...backPairs.values())
   };
 }
 

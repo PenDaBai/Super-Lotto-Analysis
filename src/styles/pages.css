@@ -39,6 +39,11 @@
 .query-grid,
 .manage-grid { grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr); }
 
+.query-grid,
+.manage-grid {
+  align-items: start;
+}
+
 .quick-card {
   background: #fff;
   border: 1px solid #e5e7eb;
@@ -93,6 +98,111 @@
   gap: 8px;
 }
 
+.number-pick-panel {
+  display: grid;
+  gap: 12px;
+}
+
+.pick-grid {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+
+.pick-grid__head {
+  align-items: center;
+  color: #475569;
+  display: flex;
+  justify-content: space-between;
+}
+
+.pick-grid__nums {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+}
+
+.pick-grid__nums button {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  color: #475569;
+  font-weight: 800;
+  min-height: 34px;
+}
+
+.pick-grid__nums button.selected.front {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.pick-grid__nums button.selected.back {
+  background: #dbeafe;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+}
+
+.prize-summary {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.prize-summary span,
+.prize-filter label {
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.prize-summary b {
+  font-size: 18px;
+}
+
+.prize-filter {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.prize-filter__title {
+  color: #64748b;
+  font-size: 11px;
+  margin-right: 2px;
+}
+
+.prize-filter label {
+  background: transparent;
+  border-color: #dbe2ea;
+  color: #64748b;
+  border-radius: 999px;
+  font-size: 11px;
+  gap: 0;
+  justify-content: flex-start;
+  min-height: 22px;
+  padding: 2px 7px;
+}
+
+.prize-filter input {
+  display: none;
+}
+
+.prize-filter label.active {
+  background: #eef2ff;
+  border-color: #c7d2fe;
+  color: #3730a3;
+}
+
 .rank-row {
   align-items: center;
   display: grid;
@@ -134,4 +244,5 @@
   .hero-panel h1 { font-size: 40px; }
   .draw-row,
   .pick-row { grid-template-columns: 1fr; }
+  .prize-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }

@@ -28,9 +28,12 @@ export function AnalysisPage({ draws }: { draws: DltDraw[] }) {
     <div className="page-stack">
       <SectionHeader
         title="数据分析"
-        desc={`当前分析 ${rangeDraws.length} 期，卡片均可独立增删改。`}
-        actions={<RangeSelector options={ranges} activeKey={activeRange} customCount={customCount} onChange={setActiveRange} onCustomCount={setCustomCount} />}
+        desc="所有卡片都跟随下方区间切换，分析仅供娱乐。"
       />
+      <div className="analysis-toolbar">
+        <span className="analysis-toolbar__meta">当前分析 {rangeDraws.length} 期</span>
+        <RangeSelector options={ranges} activeKey={activeRange} customCount={customCount} onChange={setActiveRange} onCustomCount={setCustomCount} />
+      </div>
       <div className="analysis-grid">
         {analysisCards.map(({ id, Component }) => <Component key={id} draws={rangeDraws} allDraws={draws} />)}
       </div>

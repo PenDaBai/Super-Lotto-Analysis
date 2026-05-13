@@ -9,7 +9,9 @@ export function calcFunStats(draws: DltDraw[]) {
     return acc;
   }, {});
   const birthdayRate = allFront.filter((num) => num <= 31).length / Math.max(allFront.length, 1);
+  const consecutiveRate = draws.filter((draw) => draw.front.some((num, index) => index > 0 && num === draw.front[index - 1] + 1)).length / Math.max(draws.length, 1);
+  const sameTailRate = draws.filter((draw) => new Set(draw.front.map((num) => num % 10)).size < draw.front.length).length / Math.max(draws.length, 1);
   const hot = frequency(draws, "front").sort((a, b) => b.count - a.count).slice(0, 5);
   const cold = frequency(draws, "front").sort((a, b) => a.count - b.count).slice(0, 5);
-  return { tail, birthdayRate, hotColdScore: hot[0]?.count - cold[0]?.count || 0 };
+  return { tail, birthdayRate, consecutiveRate, sameTailRate, hotColdScore: hot[0]?.count - cold[0]?.count || 0 };
 }

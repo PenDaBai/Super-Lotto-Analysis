@@ -1,16 +1,20 @@
 import { useMemo, useState } from "react";
 import { NumberBallGroup } from "../../components/NumberBall";
 import { SectionHeader } from "../../components/SectionHeader";
-import { evaluatePrize, isCompleteMatch } from "../../domain/rules";
+import type { PrizeLevel } from "../../domain/rules";
 import { parseNumberInput, uniqueSorted } from "../../domain/numbers";
 import type { DltDraw } from "../../types/dlt";
+import { NumberPickPanel } from "./NumberPickPanel";
+import { PrizeLevelFilter } from "./PrizeLevelFilter";
+import { calcPrizeHits, filterPrizeHits, summarizePrizeHits } from "./prizeStats";
 
 export function QueryPage({ draws }: { draws: DltDraw[] }) {
   const [keyword, setKeyword] = useState("");
   const [frontText, setFrontText] = useState("01 06 14 15 17");
   const [backText, setBackText] = useState("02 03");
-  const selectedFront = uniqueSorted(parseNumberInput(frontText)).slice(0, 5);
-  const selectedBack = uniqueSorted(parseNumberInput(backText)).slice(0, 2);
+  const [visibleLevels, setVisibleLevels] = useState<PrizeLevel[]>(["一等奖", "二等奖", "三等奖"]);
+  const selectedFront = uniqueSorted(parseNumberInput(frontText)).filter((num) => num >= 1 && num <= 35);
+  const selectedBack = uniqueSorted(parseNumberInput(backText)).filter((num) => num >= 1 && num <= 12);
 
   const rows = useMemo(() => {
     const kw = keyword.trim();
@@ -20,14 +24,9 @@ export function QueryPage({ draws }: { draws: DltDraw[] }) {
     }).slice(0, 120);
   }, [draws, keyword]);
 
-  const prizeRows = useMemo(() => {
-    if (selectedFront.length !== 5 || selectedBack.length !== 2) return [];
-    return draws.map((draw) => ({
-      draw,
-      prize: evaluatePrize(selectedFront, selectedBack, draw.front, draw.back),
-      complete: isCompleteMatch(selectedFront, selectedBack, draw.front, draw.back)
-    })).filter((row) => row.prize.level !== "未中奖").reverse();
-  }, [draws, selectedBack, selectedFront]);
+  const prizeRows = useMemo(() => calcPrizeHits(draws, selectedFront, selectedBack), [draws, selectedBack, selectedFront]);
+  const prizeSummary = useMemo(() => summarizePrizeHits(prizeRows), [prizeRows]);
+  const visiblePrizeRows = useMemo(() => filterPrizeHits(prizeRows, visibleLevels), [prizeRows, visibleLevels]);
 
   return (
     <div className="page-stack">
@@ -44,9 +43,12 @@ export function QueryPage({ draws }: { draws: DltDraw[] }) {
           <h3>我选的号码是否中过奖</h3>
           <div className="form-row"><label>前区</label><input value={frontText} onChange={(e) => setFrontText(e.target.value)} /></div>
           <div className="form-row"><label>后区</label><input value={backText} onChange={(e) => setBackText(e.target.value)} /></div>
-          <p className="card-note">已找到 {prizeRows.length} 次历史固定奖级命中，完全一致 {prizeRows.filter((row) => row.complete).length} 次。</p>
+          <NumberPickPanel front={selectedFront} back={selectedBack} onFront={setFrontText} onBack={setBackText} />
+          <PrizeSummary rows={prizeSummary} />
+          <PrizeLevelFilter selected={visibleLevels} onChange={setVisibleLevels} />
+          <p className="card-note">按复式票最高奖级统计：共命中 {prizeRows.length} 次，当前筛选显示 {visiblePrizeRows.length} 次；完整覆盖开奖号码 {prizeRows.filter((row) => row.complete).length} 次。</p>
           <div className="draw-list compact">
-            {prizeRows.slice(0, 80).map(({ draw, prize }) => (
+            {visiblePrizeRows.slice(0, 80).map(({ draw, prize }) => (
               <div className="draw-row" key={draw.issue}>
                 <span>{draw.issue}</span>
                 <b>{prize.level}</b>
@@ -56,6 +58,19 @@ export function QueryPage({ draws }: { draws: DltDraw[] }) {
           </div>
         </section>
       </div>
+    </div>
+  );
+}
+
+function PrizeSummary({ rows }: { rows: Array<{ level: PrizeLevel; count: number }> }) {
+  return (
+    <div className="prize-summary">
+      {rows.map((item) => (
+        <span key={item.level}>
+          {item.level}
+          <b>{item.count}</b>
+        </span>
+      ))}
     </div>
   );
 }
