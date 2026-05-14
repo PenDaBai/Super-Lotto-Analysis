@@ -1,0 +1,240 @@
+.fun-persona {
+  align-items: end;
+  background:
+    radial-gradient(circle at 82% 20%, rgba(255,255,255,.22), transparent 28%),
+    linear-gradient(135deg, #881337, #be123c 58%, #f43f5e);
+  border-radius: 8px;
+  color: #fff;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  padding: 14px;
+}
+
+.fun-kicker {
+  color: rgba(255,255,255,.75);
+  display: block;
+  font-size: .78rem;
+  margin-bottom: 4px;
+}
+
+.fun-persona strong {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.fun-persona p {
+  color: rgba(255,255,255,.82);
+  margin: 6px 0 0;
+}
+
+.fun-tail-pair {
+  display: grid;
+  gap: 6px;
+  min-width: 112px;
+}
+
+.fun-tail-pair span {
+  background: rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 8px;
+  padding: 7px 8px;
+  text-align: center;
+}
+
+.fun-tail-pair b {
+  font-size: 1.1rem;
+}
+
+.fun-section-title {
+  color: #4c0519;
+  font-size: .95rem;
+  margin: 0;
+}
+
+.fun-score-list {
+  display: grid;
+  gap: 9px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fun-score-list--back .fun-score {
+  background: #f8fafc;
+  border-color: #dbeafe;
+}
+
+.fun-score-list--back .fun-score em {
+  color: #1e3a8a;
+}
+
+.fun-score-list--back .fun-score__bar {
+  background: #dbeafe;
+}
+
+.fun-score-list--back .fun-score__bar span {
+  background: #2563eb;
+}
+
+.fun-score {
+  background: #fff7f7;
+  border: 1px solid #ffe4e6;
+  border-radius: 8px;
+  display: grid;
+  gap: 5px;
+  padding: 9px;
+}
+
+.fun-score__head {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.fun-score__head span {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.fun-score__head b {
+  white-space: nowrap;
+}
+
+.fun-score em {
+  color: #7f1d1d;
+  font-size: .78rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.fun-score__bar {
+  background: #fee2e2;
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.fun-score__bar span {
+  background: #be123c;
+  display: block;
+  height: 100%;
+}
+
+.fun-snippets {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fun-snippets div {
+  background: linear-gradient(180deg, #fff, #fff1f2);
+  border: 1px solid #fecdd3;
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+}
+
+.fun-snippets span {
+  align-items: center;
+  color: #9f1239;
+  display: inline-flex;
+  font-size: .78rem;
+  gap: 4px;
+}
+
+.fun-snippets strong {
+  color: #4c0519;
+}
+
+.fun-help {
+  align-items: center;
+  background: #fff;
+  border: 1px solid #f9a8d4;
+  border-radius: 999px;
+  color: #be123c;
+  cursor: help;
+  display: inline-flex;
+  font-size: .7rem;
+  font-style: normal;
+  font-weight: 700;
+  height: 16px;
+  justify-content: center;
+  line-height: 1;
+  width: 16px;
+}
+
+.tail-aura {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.tail-aura div {
+  background: var(--tail-bg);
+  border: 1px solid var(--tail-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  grid-template-rows: auto auto 5px;
+  min-height: 74px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.tail-aura b {
+  color: var(--tail-text);
+  font-size: 1rem;
+}
+
+.tail-aura small {
+  color: #4c0519;
+  font-weight: 700;
+}
+
+.tail-aura__mark {
+  background: var(--tail-mark);
+  border-radius: 999px;
+  display: block;
+  height: 5px;
+  opacity: .88;
+  width: var(--tail-width);
+}
+
+.tail-aura__item--hot {
+  --tail-bg: linear-gradient(135deg, rgba(190,18,60,var(--tail-alpha)), rgba(251,113,133,var(--tail-alpha))), #fff7f7;
+  --tail-border: #fecdd3;
+  --tail-mark: #be123c;
+  --tail-text: #be123c;
+}
+
+.tail-aura__item--quiet {
+  --tail-bg: linear-gradient(135deg, rgba(100,116,139,var(--tail-alpha)), rgba(203,213,225,var(--tail-alpha))), #f8fafc;
+  --tail-border: #e2e8f0;
+  --tail-mark: #64748b;
+  --tail-text: #475569;
+}
+
+@media (max-width: 980px) {
+  .tail-aura {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .fun-persona,
+  .fun-score-list,
+  .fun-snippets {
+    grid-template-columns: 1fr;
+  }
+
+  .fun-tail-pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tail-aura {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
