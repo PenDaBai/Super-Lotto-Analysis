@@ -11,13 +11,6 @@ if (meta.count !== draws.length) {
 if (latest && (meta.latestIssue !== latest.issue || meta.latestDate !== latest.date)) {
   result.errors.push(`元数据最新期 ${meta.latestIssue}/${meta.latestDate} 与数据 ${latest.issue}/${latest.date} 不一致`);
 }
-if (draws.length !== 2869) {
-  result.errors.push(`当前基础数据应为 2869 条，实际 ${draws.length} 条`);
-}
-if (!latest || latest.issue !== "26051" || latest.date !== "2026-05-11") {
-  result.errors.push("当前基础数据最新记录应为 26051 / 2026-05-11");
-}
-
 if (result.errors.length) {
   console.error(result.errors.join("\n"));
   process.exit(1);

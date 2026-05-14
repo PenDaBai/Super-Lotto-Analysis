@@ -8,50 +8,74 @@ import {
   writeJson
 } from "./dlt-utils.mjs";
 
-const SOURCE_URL = "https://datachart.500.com/dlt/history/history.shtml";
+const HISTORY_URL = "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry";
+const DEFAULT_LIMIT = Number.parseInt(getArg("limit") || "", 10) || 100;
 const draws = readJson(DATA_PATH);
 
 try {
-  const remote = await fetchRemoteDraws();
-  const known = new Set(draws.map((draw) => draw.issue));
-  const additions = remote.filter((draw) => !known.has(draw.issue));
+  const latestLocal = [...draws].sort((a, b) => a.issue.localeCompare(b.issue)).at(-1);
+  if (!latestLocal) throw new Error("本地数据为空，不能增量同步。");
 
-  if (!additions.length) {
-    console.log("No new draws found.");
+  const history = await fetchOfficialHistory(DEFAULT_LIMIT);
+  const latestRemote = history.at(-1);
+  if (!latestRemote) throw new Error("官方历史接口没有返回大乐透数据。");
+
+  const missing = history.filter((draw) => Number(draw.issue) > Number(latestLocal.issue));
+  if (!missing.length) {
+    console.log(`No new draws found. Latest local draw is already ${latestLocal.issue}; official latest is ${latestRemote.issue}.`);
     process.exit(0);
   }
 
-  const merged = [...draws, ...additions].sort((a, b) => a.issue.localeCompare(b.issue));
+  const firstMissing = Number(missing[0].issue);
+  const expectedFirst = Number(latestLocal.issue) + 1;
+  if (firstMissing !== expectedFirst) {
+    throw new Error(`本地最新 ${latestLocal.issue}，接口只拉到 ${missing[0].issue} 起。请加大 --limit，例如 npm run sync:dlt -- --limit=200。`);
+  }
+
+  const merged = [...draws, ...missing].sort((a, b) => a.issue.localeCompare(b.issue));
   const result = validateDraws(merged);
   if (!result.ok) throw new Error(result.errors.join("\n"));
 
   writeJson(DATA_PATH, merged);
-  writeJson(META_PATH, buildMeta(merged, SOURCE_URL));
-  console.log(`Synced ${additions.length} new draws.`);
+  writeJson(META_PATH, buildMeta(merged, HISTORY_URL));
+  console.log(`Synced ${missing.length} draws: ${missing[0].issue} -> ${missing.at(-1).issue}`);
 } catch (error) {
   console.error(`Sync failed: ${error.message}`);
-  console.error("远端可能启用了安全拦截。可先使用页面导入或手动更新，再运行 npm run data:validate。");
+  console.error("处理断档：加大 --limit 重试；如果断档超过官方接口可返回范围，再使用 Markdown/JSON 导入补齐。");
   process.exit(1);
 }
 
-async function fetchRemoteDraws() {
-  const response = await fetch(SOURCE_URL, {
+async function fetchOfficialHistory(limit) {
+  const url = `${HISTORY_URL}?gameNo=85&provinceId=0&isVerify=1&termLimits=${limit}`;
+  const response = await fetch(url, {
     headers: {
-      "accept": "text/html,application/xhtml+xml",
+      "accept": "application/json",
+      "referer": "https://m.lottery.gov.cn/zst/dlt/?tt_force_outside=1",
       "user-agent": "Mozilla/5.0 DLT local sync"
     }
   });
-  const html = await response.text();
-  if (!response.ok || /请求已被站点的安全策略拦截|Restricted Access/.test(html)) {
-    throw new Error(`500.com blocked the request (${response.status})`);
+  if (!response.ok) throw new Error(`官方历史接口请求失败：${response.status}`);
+
+  const payload = await response.json();
+  if (!payload.success || payload.errorCode !== "0" || !Array.isArray(payload.value?.list)) {
+    throw new Error("官方历史接口返回格式不符合预期。");
   }
-  const rows = [...html.matchAll(/<tr[^>]*>\s*<td[^>]*>(\d{5})<\/td>\s*<td[^>]*>(\d{2})<\/td>\s*<td[^>]*>(\d{2})<\/td>\s*<td[^>]*>(\d{2})<\/td>\s*<td[^>]*>(\d{2})<\/td>\s*<td[^>]*>(\d{2})<\/td>\s*<td[^>]*>(\d{2})<\/td>\s*<td[^>]*>(\d{2})<\/td>[\s\S]*?(\d{4}-\d{2}-\d{2})/g)];
-  if (!rows.length) throw new Error("No draw rows parsed from remote HTML");
-  return rows.map((match) => normalizeDraw({
-    issue: match[1],
-    front: match.slice(2, 7).map(Number),
-    back: match.slice(7, 9).map(Number),
-    date: match[9],
-    source: SOURCE_URL
-  }));
+
+  return payload.value.list
+    .map((item) => {
+      const nums = String(item.lotteryDrawResult).trim().split(/\s+/).map(Number);
+      return normalizeDraw({
+        issue: item.lotteryDrawNum,
+        date: item.lotteryDrawTime,
+        front: nums.slice(0, 5),
+        back: nums.slice(5, 7),
+        source: HISTORY_URL
+      });
+    })
+    .sort((a, b) => a.issue.localeCompare(b.issue));
+}
+
+function getArg(name) {
+  const prefix = `--${name}=`;
+  return process.argv.find((arg) => arg.startsWith(prefix))?.slice(prefix.length);
 }

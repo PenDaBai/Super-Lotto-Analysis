@@ -1,42 +1,31 @@
+import { frequency } from "../../../domain/stats";
 import type { DltDraw } from "../../../types/dlt";
 
 export function calcTimeStats(draws: DltDraw[]) {
-  const byYear = new Map<string, number>();
-  const byMonth = new Map<string, DltDraw[]>();
-  const byWeekday = new Map<string, number>();
-
-  for (const draw of draws) {
-    const date = new Date(draw.date);
-    add(byYear, draw.date.slice(0, 4));
-    addDraw(byMonth, draw.date.slice(5, 7), draw);
-    add(byWeekday, ["日", "一", "二", "三", "四", "五", "六"][date.getDay()]);
-  }
-
+  const sorted = [...draws].sort((a, b) => a.issue.localeCompare(b.issue));
+  const longWindow = sorted.slice(-Math.min(100, sorted.length));
+  const shortWindow = sorted.slice(-Math.min(30, sorted.length));
   return {
-    byYear: [...byYear.entries()].map(([label, value]) => ({ label, value })),
-    byMonth: [...byMonth.entries()].map(([label, rows]) => ({
-      label: `${label}月`,
-      value: rows.length,
-      topFront: topNumber(rows.flatMap((draw) => draw.front)),
-      topBack: topNumber(rows.flatMap((draw) => draw.back))
-    })),
-    byWeekday: [...byWeekday.entries()].map(([label, value]) => ({ label: `周${label}`, value }))
+    front: migration(longWindow, shortWindow, "front"),
+    back: migration(longWindow, shortWindow, "back"),
+    longCount: longWindow.length,
+    shortCount: shortWindow.length
   };
 }
 
-function add(map: Map<string, number>, key: string) {
-  map.set(key, (map.get(key) || 0) + 1);
-}
-
-function addDraw(map: Map<string, DltDraw[]>, key: string, draw: DltDraw) {
-  map.set(key, [...(map.get(key) || []), draw]);
-}
-
-function topNumber(nums: number[]) {
-  const counts = nums.reduce<Record<number, number>>((acc, num) => {
-    acc[num] = (acc[num] || 0) + 1;
-    return acc;
-  }, {});
-  const [num, count] = Object.entries(counts).sort((a, b) => b[1] - a[1])[0] || ["0", 0];
-  return { num: Number(num), count };
+function migration(longWindow: DltDraw[], shortWindow: DltDraw[], area: "front" | "back") {
+  const longMap = new Map(frequency(longWindow, area).map((item) => [item.num, item.count / Math.max(longWindow.length, 1)]));
+  return frequency(shortWindow, area)
+    .map((item) => {
+      const shortRate = item.count / Math.max(shortWindow.length, 1);
+      const longRate = longMap.get(item.num) || 0;
+      return {
+        num: item.num,
+        shortCount: item.count,
+        longRate,
+        shortRate,
+        delta: shortRate - longRate
+      };
+    })
+    .sort((a, b) => b.delta - a.delta);
 }

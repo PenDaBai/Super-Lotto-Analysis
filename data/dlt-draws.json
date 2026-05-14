@@ -48771,5 +48771,22 @@
     ],
     "source": "dlt_history_FULL.md",
     "importedAt": "2026-05-13T13:44:16.922Z"
+  },
+  {
+    "issue": "26052",
+    "date": "2026-05-13",
+    "front": [
+      2,
+      3,
+      20,
+      28,
+      33
+    ],
+    "back": [
+      2,
+      12
+    ],
+    "source": "https://www.lottery.gov.cn/tz_kj.json",
+    "importedAt": "2026-05-13T15:05:17.774Z"
   }
 ]

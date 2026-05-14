@@ -1,0 +1,149 @@
+.picker-panel {
+  overflow: hidden;
+}
+
+.picker-stage {
+  background: linear-gradient(135deg, #111827, #1f2937 55%, #7f1d1d);
+  border-radius: 8px;
+  color: #fff;
+  display: grid;
+  gap: 18px;
+  min-height: 260px;
+  padding: 22px;
+  position: relative;
+}
+
+.picker-stage::before {
+  background: repeating-linear-gradient(90deg, rgba(255,255,255,.08) 0 1px, transparent 1px 38px);
+  content: "";
+  inset: 0;
+  opacity: .35;
+  position: absolute;
+}
+
+.picker-stage__content {
+  display: grid;
+  gap: 18px;
+  position: relative;
+  z-index: 1;
+}
+
+.picker-stage__title {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.picker-stage h3 {
+  font-size: 26px;
+  margin: 0;
+}
+
+.picker-stage p {
+  color: #d1d5db;
+  margin: 6px 0 0;
+}
+
+.ritual-orbit {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  min-height: 76px;
+}
+
+.ritual-orbit span {
+  animation: floatBall 1.2s ease-in-out infinite;
+  background: #fee2e2;
+  border-radius: 999px;
+  color: #b91c1c;
+  display: grid;
+  font-weight: 900;
+  height: 42px;
+  place-items: center;
+  width: 42px;
+}
+
+.ritual-orbit span:nth-child(2n) {
+  animation-delay: .12s;
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.ritual-orbit span:nth-child(3n) {
+  animation-delay: .24s;
+}
+
+.picker-stage.is-rolling .ritual-orbit span {
+  animation: spinBall .45s linear infinite;
+}
+
+.picker-controls {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.picker-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ritual-button {
+  align-items: center;
+  background: #f8fafc;
+  border: 0;
+  border-radius: 8px;
+  color: #111827;
+  display: inline-flex;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 14px;
+}
+
+.ritual-button.primary {
+  background: #facc15;
+}
+
+.ritual-button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+.ritual-status {
+  color: #fde68a;
+  min-height: 20px;
+}
+
+.pick-list.ritual-results {
+  max-height: none;
+}
+
+.pick-row.reveal {
+  animation: revealPick .5s ease both;
+  animation-delay: calc(var(--delay, 0) * 90ms);
+  border-color: #f8d477;
+}
+
+@keyframes floatBall {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+
+@keyframes spinBall {
+  from { transform: rotate(0deg) scale(.92); }
+  to { transform: rotate(360deg) scale(1.05); }
+}
+
+@keyframes revealPick {
+  from { opacity: 0; transform: translateY(14px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 760px) {
+  .picker-controls {
+    grid-template-columns: 1fr;
+  }
+}

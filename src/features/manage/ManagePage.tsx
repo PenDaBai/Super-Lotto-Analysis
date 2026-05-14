@@ -55,11 +55,15 @@ export function ManagePage({ draws, localDraws, onLocalDraws }: ManagePageProps)
         </section>
         <section className="panel">
           <h3>脚本同步</h3>
-          <code>npm run data:import-md</code>
-          <code>npm run data:validate</code>
-          <code>npm run data:export-md</code>
+          <p><strong>平时更新只需要执行这一条：</strong></p>
           <code>npm run sync:dlt</code>
-          <p className="card-note">500.com 可能拦截自动请求；失败时使用批量导入，再导出 JSON 交给脚本或人工替换。</p>
+          <p className="card-note">它会自动读取官方历史接口，并从本地最新期开始补齐缺失数据。</p>
+          <p><strong>如果很久没更新，断档较多：</strong></p>
+          <code>npm run sync:dlt -- --limit=200</code>
+          <p className="card-note">`limit` 表示向官方拉最近多少期。断档越久，数值可以越大。</p>
+          <p><strong>可选检查，不是每次必须：</strong></p>
+          <code>npm run data:validate</code>
+          <p className="card-note">用于确认数据格式和最新元数据是否正常。`data:import-md` 和 `data:export-md` 只在导入/导出 Markdown 时使用。</p>
         </section>
       </div>
     </div>

@@ -109,32 +109,30 @@
   height: 100%;
 }
 
-.month-grid {
-  display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.month-card {
+.migration-list {
   background: #f8fafc;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   display: grid;
-  gap: 4px;
+  gap: 8px;
   padding: 10px;
 }
 
-.month-card b {
+.migration-row {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 34px 48px 1fr;
+  min-height: 34px;
+}
+
+.migration-list b {
   color: #0891b2;
 }
 
-.month-card span {
-  align-items: center;
+.migration-list small {
   color: #64748b;
-  display: flex;
   font-size: 12px;
-  gap: 6px;
-  justify-content: space-between;
 }
 
 .fun-grid {
@@ -150,8 +148,11 @@
   }
 
   .explain-grid,
-  .month-grid,
   .fun-grid {
     grid-template-columns: 1fr;
+  }
+
+  .migration-row {
+    grid-template-columns: 34px 48px 1fr;
   }
 }
