@@ -1,0 +1,135 @@
+.calendar-summary {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.calendar-metric {
+  background: linear-gradient(180deg, #fff7ed, #fff);
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  display: grid;
+  gap: 5px;
+  padding: 10px;
+}
+
+.calendar-metric span {
+  color: #9a3412;
+  font-size: .82rem;
+}
+
+.calendar-metric strong {
+  color: #7c2d12;
+  font-size: 1.35rem;
+}
+
+.calendar-metric em {
+  color: #64748b;
+  font-size: .76rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+
+.calendar-title {
+  color: #431407;
+  display: block;
+  margin: 2px 0 0;
+}
+
+.calendar-month-grid {
+  display: grid;
+  gap: 7px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.calendar-month-grid div {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: grid;
+  gap: 3px;
+  padding: 9px;
+}
+
+.calendar-month-grid div.active {
+  background: linear-gradient(135deg, #fff7ed, #ffedd5);
+  border-color: #fdba74;
+}
+
+.calendar-month-grid b {
+  color: #c2410c;
+}
+
+.calendar-month-grid span,
+.calendar-day-list em,
+.calendar-recent span,
+.calendar-recent small {
+  color: #64748b;
+  font-size: .78rem;
+  font-style: normal;
+}
+
+.calendar-split {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: .9fr 1.1fr;
+}
+
+.calendar-day-list {
+  display: grid;
+  gap: 7px;
+}
+
+.calendar-day-list span {
+  align-items: center;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: 48px 1fr 1fr;
+  padding: 8px;
+}
+
+.calendar-day-list b {
+  color: #c2410c;
+}
+
+.calendar-recent {
+  display: grid;
+  gap: 7px;
+}
+
+.calendar-recent div {
+  background: #fff;
+  border: 1px solid #fed7aa;
+  border-radius: 8px;
+  display: grid;
+  gap: 5px;
+  grid-template-columns: 58px 90px 1fr;
+  padding: 8px;
+}
+
+.calendar-recent b {
+  color: #7c2d12;
+}
+
+@media (max-width: 980px) {
+  .calendar-summary,
+  .calendar-month-grid,
+  .calendar-split {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .calendar-recent div {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .calendar-summary,
+  .calendar-month-grid,
+  .calendar-split {
+    grid-template-columns: 1fr;
+  }
+}

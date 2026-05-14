@@ -1,0 +1,161 @@
+.omission-hero,
+.co-hero {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.omission-metric,
+.co-top {
+  border-radius: 8px;
+  display: grid;
+  gap: 6px;
+  min-height: 96px;
+  padding: 12px;
+}
+
+.omission-metric--front,
+.co-top--front {
+  background: linear-gradient(135deg, #fff1f2, #fee2e2);
+  border: 1px solid #fecdd3;
+}
+
+.omission-metric--back,
+.co-top--back {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border: 1px solid #bfdbfe;
+}
+
+.omission-metric span,
+.co-top span {
+  color: #64748b;
+  font-size: .8rem;
+}
+
+.omission-metric strong,
+.co-top strong {
+  color: #0f172a;
+  font-size: 1.25rem;
+}
+
+.co-top b {
+  color: #475569;
+}
+
+.omission-columns,
+.co-columns {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.omission-list,
+.co-pair-list {
+  display: grid;
+  gap: 8px;
+}
+
+.omission-list > strong,
+.co-pair-list > strong {
+  color: #334155;
+}
+
+.omission-row,
+.co-pair-row {
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  display: grid;
+  gap: 8px;
+  padding: 5px 0 8px;
+}
+
+.omission-row {
+  grid-template-columns: 34px minmax(0, 1fr) auto;
+}
+
+.omission-row div {
+  display: grid;
+  gap: 5px;
+}
+
+.omission-row span,
+.omission-row small {
+  color: #64748b;
+  font-size: .78rem;
+}
+
+.omission-row small {
+  background: #f1f5f9;
+  border-radius: 999px;
+  padding: 3px 7px;
+  white-space: nowrap;
+}
+
+.omission-row i,
+.co-pair-row i {
+  background: #eef2f7;
+  border-radius: 999px;
+  display: block;
+  height: 7px;
+  overflow: hidden;
+}
+
+.omission-row mark {
+  background: #7c3aed;
+  display: block;
+  height: 100%;
+}
+
+.co-pair-row {
+  grid-template-columns: 76px minmax(0, 1fr) 52px;
+}
+
+.co-pair-row span {
+  align-items: center;
+  color: #0f172a;
+  display: inline-flex;
+  gap: 4px;
+  font-weight: 800;
+}
+
+.co-balls {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.co-balls .number-ball {
+  height: 26px;
+  width: 26px;
+}
+
+.co-top .number-ball--front {
+  background: #dc2626;
+  color: #fff;
+}
+
+.co-top .number-ball--back {
+  background: #2563eb;
+  color: #fff;
+}
+
+.co-pair-row mark {
+  background: var(--bar-color);
+  display: block;
+  height: 100%;
+}
+
+.co-pair-row b {
+  color: #475569;
+  font-size: .82rem;
+  text-align: right;
+}
+
+@media (max-width: 720px) {
+  .omission-hero,
+  .co-hero,
+  .omission-columns,
+  .co-columns {
+    grid-template-columns: 1fr;
+  }
+}
