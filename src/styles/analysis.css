@@ -135,6 +135,34 @@
   font-size: 12px;
 }
 
+.matrix-block {
+  display: grid;
+  gap: 8px;
+}
+
+.number-matrix {
+  display: grid;
+  gap: 6px;
+}
+
+.matrix-cell {
+  align-items: center;
+  border-radius: 7px;
+  color: #fff;
+  display: flex;
+  font-weight: 800;
+  justify-content: center;
+  min-height: 34px;
+}
+
+.matrix-cell--front {
+  background: #dc2626;
+}
+
+.matrix-cell--back {
+  background: #2563eb;
+}
+
 .fun-grid {
   display: grid;
   gap: 10px;
