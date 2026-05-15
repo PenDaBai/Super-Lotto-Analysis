@@ -1,13 +1,73 @@
 .picker-panel {
+  gap: 18px;
   overflow: hidden;
+}
+
+.picker-layout {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.picker-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+}
+
+.picker-box h3 {
+  margin: 0;
+}
+
+.picker-controls {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.picker-controls--compact {
+  grid-template-columns: repeat(2, minmax(0, 160px));
+}
+
+.picker-field {
+  display: grid;
+  gap: 5px;
+}
+
+.picker-field span {
+  color: #64748b;
+  font-size: .78rem;
+}
+
+.picker-field input,
+.picker-field select {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  min-height: 38px;
+  padding: 0 10px;
+}
+
+.picker-errors {
+  display: grid;
+  gap: 5px;
+}
+
+.picker-errors span {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  color: #991b1b;
+  padding: 7px 9px;
 }
 
 .picker-stage {
   background: linear-gradient(135deg, #111827, #1f2937 55%, #7f1d1d);
   border-radius: 8px;
   color: #fff;
-  display: grid;
-  gap: 18px;
   min-height: 260px;
   padding: 22px;
   position: relative;
@@ -23,15 +83,16 @@
 
 .picker-stage__content {
   display: grid;
-  gap: 18px;
+  gap: 16px;
   position: relative;
   z-index: 1;
 }
 
 .picker-stage__title {
+  align-items: flex-start;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   justify-content: space-between;
 }
 
@@ -45,12 +106,39 @@
   margin: 6px 0 0;
 }
 
+.ritual-status {
+  align-items: center;
+  color: #fde68a;
+  display: inline-flex;
+  gap: 6px;
+}
+
+.ritual-steps {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.ritual-steps span {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 8px;
+  color: #cbd5e1;
+  padding: 8px;
+  text-align: center;
+}
+
+.ritual-steps span.active {
+  background: #facc15;
+  color: #111827;
+}
+
 .ritual-orbit {
   align-items: center;
   display: flex;
   gap: 10px;
   justify-content: center;
-  min-height: 76px;
+  min-height: 72px;
 }
 
 .ritual-orbit span {
@@ -71,60 +159,37 @@
   color: #1d4ed8;
 }
 
-.ritual-orbit span:nth-child(3n) {
-  animation-delay: .24s;
-}
-
 .picker-stage.is-rolling .ritual-orbit span {
   animation: spinBall .45s linear infinite;
 }
 
-.picker-controls {
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.picker-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.ritual-button {
+.ritual-button,
+.ritual-skip {
   align-items: center;
-  background: #f8fafc;
   border: 0;
   border-radius: 8px;
-  color: #111827;
   display: inline-flex;
   gap: 8px;
-  min-height: 42px;
+  justify-content: center;
+  min-height: 40px;
   padding: 0 14px;
 }
 
 .ritual-button.primary {
   background: #facc15;
+  color: #111827;
+  font-weight: 800;
+}
+
+.ritual-skip {
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  justify-self: center;
 }
 
 .ritual-button:disabled {
   cursor: wait;
   opacity: .65;
-}
-
-.ritual-status {
-  color: #fde68a;
-  min-height: 20px;
-}
-
-.pick-list.ritual-results {
-  max-height: none;
-}
-
-.pick-row.reveal {
-  animation: revealPick .5s ease both;
-  animation-delay: calc(var(--delay, 0) * 90ms);
-  border-color: #f8d477;
 }
 
 @keyframes floatBall {
@@ -137,13 +202,10 @@
   to { transform: rotate(360deg) scale(1.05); }
 }
 
-@keyframes revealPick {
-  from { opacity: 0; transform: translateY(14px) scale(.98); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-@media (max-width: 760px) {
-  .picker-controls {
+@media (max-width: 880px) {
+  .picker-layout,
+  .picker-controls,
+  .ritual-steps {
     grid-template-columns: 1fr;
   }
 }

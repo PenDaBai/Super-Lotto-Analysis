@@ -1,0 +1,90 @@
+.ritual-results {
+  display: grid;
+  gap: 12px;
+}
+
+.pick-result-card {
+  animation: revealPick .5s ease both;
+  animation-delay: calc(var(--delay, 0) * 90ms);
+  background: #fff;
+  border: 1px solid #f8d477;
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+
+.pick-result-card__head,
+.pick-balls,
+.pick-tags,
+.pick-profile {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pick-result-card__head {
+  justify-content: space-between;
+}
+
+.pick-result-card__head span,
+.pick-profile span,
+.pick-result-card p {
+  color: #64748b;
+}
+
+.pick-result-card__head strong {
+  display: block;
+  font-size: 1.1rem;
+  margin-top: 3px;
+}
+
+.pick-tags span,
+.pick-profile span {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  padding: 5px 9px;
+}
+
+.pick-score-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.pick-score-grid div {
+  display: grid;
+  gap: 4px;
+}
+
+.pick-score-grid span,
+.pick-score-grid b {
+  color: #475569;
+  font-size: .78rem;
+}
+
+.pick-score-grid i {
+  background: #eef2f7;
+  border-radius: 999px;
+  display: block;
+  height: 7px;
+  overflow: hidden;
+}
+
+.pick-score-grid mark {
+  background: #be123c;
+  display: block;
+  height: 100%;
+}
+
+@keyframes revealPick {
+  from { opacity: 0; transform: translateY(14px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 880px) {
+  .pick-score-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,114 +1,103 @@
-import { Sparkles } from "lucide-react";
-import type { CSSProperties } from "react";
-import { useEffect, useRef, useState } from "react";
-import { NumberBallGroup } from "../../components/NumberBall";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SectionHeader } from "../../components/SectionHeader";
-import { parseNumberInput } from "../../domain/numbers";
+import { getRangeDraws, parseNumberInput, uniqueSorted } from "../../domain/numbers";
 import type { DltDraw, PickResult } from "../../types/dlt";
-import { makePick, type PickStrategy } from "./pickerStrategies";
+import { PickerControls, type PickerFormState } from "./PickerControls";
+import { PickResultCard } from "./PickResultCard";
+import { RitualStage } from "./RitualStage";
+import { makePick, validatePickOptions, type PickOptions } from "./pickerStrategies";
+
+const defaultState: PickerFormState = {
+  strategy: "compass",
+  range: "100",
+  mode: "single",
+  preference: "auto",
+  count: 1,
+  frontCount: 6,
+  backCount: 3,
+  excludeFront: "",
+  excludeBack: "",
+  fixedFront: "",
+  fixedBack: ""
+};
 
 export function PickerPage({ draws }: { draws: DltDraw[] }) {
-  const [strategy, setStrategy] = useState<PickStrategy>("balanced");
-  const [excludeText, setExcludeText] = useState("");
-  const [fixedText, setFixedText] = useState("");
+  const [state, setState] = useState(defaultState);
   const [results, setResults] = useState<PickResult[]>([]);
   const [rolling, setRolling] = useState(false);
-  const [ritualText, setRitualText] = useState("选择策略后开始生成。");
-  const timerRef = useRef<number | null>(null);
+  const [activeStep, setActiveStep] = useState(0);
+  const [status, setStatus] = useState("选择策略后启动选号仪式。");
+  const pendingRef = useRef<PickResult[]>([]);
+  const timersRef = useRef<number[]>([]);
+  const rangeDraws = useMemo(() => getRangeDraws(draws, state.range === "all" ? "all" : Number(state.range)), [draws, state.range]);
+  const options = useMemo(() => toOptions(state), [state]);
+  const errors = useMemo(() => validatePickOptions(options), [options]);
 
-  useEffect(() => () => {
-    if (timerRef.current) window.clearTimeout(timerRef.current);
-  }, []);
+  useEffect(() => () => clearTimers(), []);
 
-  function generate(count: 1 | 5) {
-    const excludes = parseNumberInput(excludeText);
-    const fixed = parseNumberInput(fixedText).slice(0, 5);
-    setRolling(true);
+  function update(patch: Partial<PickerFormState>) {
+    setState((current) => ({ ...current, ...patch }));
+  }
+
+  function generate() {
+    if (errors.length) return;
+    clearTimers();
+    const picks = Array.from({ length: state.count }, () => makePick(rangeDraws, options));
+    pendingRef.current = picks;
     setResults([]);
-    setRitualText(count === 1 ? "正在洗牌，准备揭晓这一注。" : "正在洗牌，5 注将依次揭晓。");
+    setRolling(true);
+    setActiveStep(0);
+    setStatus("观测数据：读取当前区间画像。");
+    schedule(260, () => { setActiveStep(1); setStatus("校准形态：匹配奇偶、大小、三区。"); });
+    schedule(620, () => { setActiveStep(2); setStatus(state.count === 1 ? "洗牌落球：这一注正在成形。" : "封盘中：多注结果依次落位。"); });
+    schedule(state.count === 1 ? 980 : 1380, reveal);
+  }
 
-    timerRef.current = window.setTimeout(() => {
-      setResults(Array.from({ length: count }, () => makePick(draws.slice(-100), strategy, excludes, fixed)));
-      setRolling(false);
-      setRitualText(count === 1 ? "这一注已生成，仅供娱乐。" : "5 注已生成，仅供娱乐。");
-    }, count === 1 ? 850 : 1250);
+  function reveal() {
+    clearTimers();
+    setActiveStep(3);
+    setRolling(false);
+    setResults(pendingRef.current);
+    setStatus(pendingRef.current.length === 1 ? "揭晓签文：这一注已生成。" : "揭晓签文：结果签已生成。");
+  }
+
+  function schedule(delay: number, fn: () => void) {
+    timersRef.current.push(window.setTimeout(fn, delay));
+  }
+
+  function clearTimers() {
+    timersRef.current.forEach((timer) => window.clearTimeout(timer));
+    timersRef.current = [];
   }
 
   return (
     <div className="page-stack">
-      <SectionHeader title="娱乐选号" desc="基于随机、均衡、冷热、遗漏等策略生成号码。" />
+      <SectionHeader title="娱乐选号" desc="基于分析画像、策略约束和选号仪式生成号码。" />
       <section className="panel picker-panel">
-        <div className={`picker-stage ${rolling ? "is-rolling" : ""}`}>
-          <div className="picker-stage__content">
-            <div className="picker-stage__title">
-              <div>
-                <h3>选号仪式台</h3>
-                <p>选择策略、排除号和定胆，然后生成号码。</p>
-              </div>
-              <span className="ritual-status">{ritualText}</span>
-            </div>
-            <div className="ritual-orbit" aria-hidden="true">
-              {[3, 8, 12, 19, 27, 6, 11].map((num) => <span key={num}>{String(num).padStart(2, "0")}</span>)}
-            </div>
-            <PickerControls
-              disabled={rolling}
-              strategy={strategy}
-              excludeText={excludeText}
-              fixedText={fixedText}
-              onStrategy={setStrategy}
-              onExclude={setExcludeText}
-              onFixed={setFixedText}
-              onGenerate={generate}
-            />
-          </div>
-        </div>
-        <div className="pick-list ritual-results">
-          {results.map((item, index) => <PickRow item={item} index={index} key={`${item.front.join("-")}-${item.back.join("-")}-${index}`} />)}
+        <PickerControls disabled={rolling} state={state} errors={errors} onChange={update} onGenerate={generate} />
+        <RitualStage activeStep={activeStep} rolling={rolling} status={status} onSkip={reveal} />
+        <div className="ritual-results">
+          {results.map((item, index) => <PickResultCard item={item} index={index} key={`${item.front.join("-")}-${item.back.join("-")}-${index}`} />)}
         </div>
       </section>
     </div>
   );
 }
 
-function PickerControls({ disabled, strategy, excludeText, fixedText, onStrategy, onExclude, onFixed, onGenerate }: ControlsProps) {
-  return (
-    <>
-      <div className="picker-controls">
-        <select value={strategy} disabled={disabled} onChange={(e) => onStrategy(e.target.value as PickStrategy)}>
-          <option value="random">完全随机</option>
-          <option value="balanced">均衡选号</option>
-          <option value="hotCold">热冷混搭</option>
-          <option value="omission">遗漏回补</option>
-        </select>
-        <input value={excludeText} disabled={disabled} onChange={(e) => onExclude(e.target.value)} placeholder="排除号，如 01 02 03" />
-        <input value={fixedText} disabled={disabled} onChange={(e) => onFixed(e.target.value)} placeholder="定胆，如 08 19" />
-      </div>
-      <div className="picker-actions">
-        <button className="ritual-button primary" disabled={disabled} type="button" onClick={() => onGenerate(1)}><Sparkles size={18} />生成一注</button>
-        <button className="ritual-button" disabled={disabled} type="button" onClick={() => onGenerate(5)}><Sparkles size={18} />生成 5 注</button>
-      </div>
-    </>
-  );
+function toOptions(state: PickerFormState): PickOptions {
+  return {
+    strategy: state.strategy,
+    mode: state.mode,
+    preference: state.preference,
+    excludeFront: clean(state.excludeFront),
+    excludeBack: clean(state.excludeBack),
+    fixedFront: clean(state.fixedFront),
+    fixedBack: clean(state.fixedBack),
+    frontCount: state.frontCount,
+    backCount: state.backCount
+  };
 }
 
-function PickRow({ item, index }: { item: PickResult; index: number }) {
-  return (
-    <div className="pick-row reveal" style={{ "--delay": index } as CSSProperties}>
-      <b>{item.strategy}</b>
-      <NumberBallGroup nums={item.front} />
-      <NumberBallGroup nums={item.back} tone="back" />
-      <small>{item.reason} 仅供娱乐，不构成购彩建议。</small>
-    </div>
-  );
-}
-
-interface ControlsProps {
-  disabled: boolean;
-  strategy: PickStrategy;
-  excludeText: string;
-  fixedText: string;
-  onStrategy: (value: PickStrategy) => void;
-  onExclude: (value: string) => void;
-  onFixed: (value: string) => void;
-  onGenerate: (count: 1 | 5) => void;
+function clean(value: string) {
+  return uniqueSorted(parseNumberInput(value));
 }

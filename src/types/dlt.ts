@@ -42,4 +42,29 @@ export interface PickResult {
   back: number[];
   strategy: string;
   reason: string;
+  mode?: "single" | "compound";
+  compoundCount?: number;
+  omen?: string;
+  tags?: string[];
+  profile?: {
+    shape: string;
+    hotCold: string;
+    omission: string;
+    math: string;
+    back: string;
+  };
+  score?: {
+    balance: number;
+    heat: number;
+    omission: number;
+    texture: number;
+    mystery: number;
+  };
+  summary?: {
+    sum: number;
+    span: number;
+    oddEven: string;
+    bigSmall: string;
+    zones: string;
+  };
 }
