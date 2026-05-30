@@ -48788,5 +48788,124 @@
     ],
     "source": "https://www.lottery.gov.cn/tz_kj.json",
     "importedAt": "2026-05-13T15:05:17.774Z"
+  },
+  {
+    "issue": "26053",
+    "date": "2026-05-16",
+    "front": [
+      2,
+      9,
+      14,
+      20,
+      31
+    ],
+    "back": [
+      5,
+      9
+    ],
+    "source": "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry",
+    "importedAt": "2026-05-20T10:05:36.840Z"
+  },
+  {
+    "issue": "26054",
+    "date": "2026-05-18",
+    "front": [
+      2,
+      6,
+      14,
+      22,
+      24
+    ],
+    "back": [
+      8,
+      11
+    ],
+    "source": "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry",
+    "importedAt": "2026-05-20T10:05:36.840Z"
+  },
+  {
+    "issue": "26055",
+    "date": "2026-05-20",
+    "front": [
+      9,
+      10,
+      20,
+      33,
+      35
+    ],
+    "back": [
+      4,
+      11
+    ],
+    "source": "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry",
+    "importedAt": "2026-05-30T16:54:55.443Z"
+  },
+  {
+    "issue": "26056",
+    "date": "2026-05-23",
+    "front": [
+      6,
+      7,
+      18,
+      21,
+      30
+    ],
+    "back": [
+      1,
+      5
+    ],
+    "source": "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry",
+    "importedAt": "2026-05-30T16:54:55.443Z"
+  },
+  {
+    "issue": "26057",
+    "date": "2026-05-25",
+    "front": [
+      23,
+      25,
+      26,
+      27,
+      34
+    ],
+    "back": [
+      4,
+      10
+    ],
+    "source": "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry",
+    "importedAt": "2026-05-30T16:54:55.443Z"
+  },
+  {
+    "issue": "26058",
+    "date": "2026-05-27",
+    "front": [
+      7,
+      12,
+      13,
+      18,
+      34
+    ],
+    "back": [
+      1,
+      5
+    ],
+    "source": "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry",
+    "importedAt": "2026-05-30T16:54:55.443Z"
+  },
+  {
+    "issue": "26059",
+    "date": "2026-05-30",
+    "front": [
+      6,
+      13,
+      17,
+      19,
+      26
+    ],
+    "back": [
+      7,
+      8
+    ],
+    "source": "https://webapi.sporttery.cn/gateway/lottery/getHistoryPageListV1.qry",
+    "importedAt": "2026-05-30T16:54:55.443Z"
   }
 ]
