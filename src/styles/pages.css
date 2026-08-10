@@ -98,6 +98,67 @@
   gap: 8px;
 }
 
+.saved-number-bar {
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.saved-number-bar__copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.saved-number-bar__copy strong {
+  font-size: 13px;
+}
+
+.saved-number-bar__copy span,
+.saved-number-message {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.saved-number-bar__actions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  gap: 6px;
+}
+
+.saved-number-bar button {
+  align-items: center;
+  border-radius: 6px;
+  display: inline-flex;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 9px;
+}
+
+.saved-number-bar__save {
+  background: #172033;
+  border: 1px solid #172033;
+  color: #fff;
+}
+
+.saved-number-bar__save:disabled {
+  background: #cbd5e1;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.saved-number-bar__clear {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  color: #64748b;
+}
+
 .number-pick-panel {
   display: grid;
   gap: 12px;
@@ -245,4 +306,6 @@
   .draw-row,
   .pick-row { grid-template-columns: 1fr; }
   .prize-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .saved-number-bar { align-items: stretch; flex-direction: column; }
+  .saved-number-bar__actions { justify-content: flex-end; }
 }
